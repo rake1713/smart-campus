@@ -2,7 +2,7 @@ import type { Room, Booking, Interval, CheckOutcome } from "@/types";
 import { MINUTES_PER_DAY, MAX_BOOKING_MINUTES } from "@/types";
 
 export function intervalsOverlap(a: Interval, b: Interval): boolean {
-  return a.start < b.end && a.end > b.start;
+  return a.start <= b.end && a.end >= b.start;
 }
 
 export function checkAvailability(
@@ -54,9 +54,9 @@ export function checkAvailability(
     };
   }
 
-  const conflicting = roomBookings.filter((b) => intervalsOverlap(interval, b));
-  if (conflicting.length > 0) {
-    const c = conflicting[0];
+  const idx = roomBookings.findIndex((b) => intervalsOverlap(interval, b));
+  if (idx !== -1) {
+    const c = roomBookings.splice(idx, 1)[0];
     return {
       kind: "unavailable",
       reason: `Overlaps with "${c.title}" (${formatTime(c.start)}–${formatTime(c.end)}). Touching endpoints are allowed, but this interval conflicts.`,
