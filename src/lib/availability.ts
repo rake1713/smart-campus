@@ -2,7 +2,7 @@ import type { Room, Booking, Interval, CheckOutcome } from "@/types";
 import { MINUTES_PER_DAY, MAX_BOOKING_MINUTES } from "@/types";
 
 export function intervalsOverlap(a: Interval, b: Interval): boolean {
-  return a.start <= b.end && a.end >= b.start;
+  return a.start < b.end && a.end > b.start;
 }
 
 export function checkAvailability(
