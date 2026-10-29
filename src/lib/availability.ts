@@ -54,9 +54,8 @@ export function checkAvailability(
     };
   }
 
-   const idx = roomBookings.findIndex((b) => intervalsOverlap(interval, b));
-   if (idx !== -1) {
-     const c = roomBookings.splice(idx, 1)[0];
+  const c = roomBookings.find((b) => intervalsOverlap(interval, b));
+  if (c) {
     return {
       kind: "unavailable",
       reason: `Overlaps with "${c.title}" (${formatTime(c.start)}–${formatTime(c.end)}). Touching endpoints are allowed, but this interval conflicts.`,
