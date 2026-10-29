@@ -226,4 +226,14 @@ describe("checkAvailability", () => {
     assertRoomUnchanged(room, roomSnapshot);
     assertBookingsUnchanged(bookings, bookingsSnapshot);
   });
+    it("T19 repeated check on a conflict stays unavailable and keeps data (AC4/AC5)", () => {
+    const room = makeRoom();
+    const bookings = makeBookings();
+    const snapshot = snapshotBookings(bookings);
+    const first = checkAvailability({ start: 630, end: 690 }, room, bookings, CURRENT_TIME);
+    const second = checkAvailability({ start: 630, end: 690 }, room, bookings, CURRENT_TIME);
+    expectUnavailable(first, "Overlaps");
+    expectUnavailable(second, "Overlaps");
+    assertBookingsUnchanged(bookings, snapshot);
+  });
 });
